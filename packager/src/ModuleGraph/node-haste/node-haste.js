@@ -33,6 +33,7 @@ const defaults = require('../../../defaults');
 type ResolveOptions = {|
   assetExts: Extensions,
   extraNodeModules: {[id: string]: string},
+  sourceExts: Extensions,
   transformedFiles: {[path: Path]: TransformedFile},
 |};
 
@@ -61,6 +62,7 @@ exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
     assetExts,
     extraNodeModules,
     transformedFiles,
+    sourceExts,
   } = options;
    const files = Object.keys(transformedFiles);
    const getTransformedFile =
@@ -79,7 +81,7 @@ exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
     getTransformedFile,
   );
    const hasteMap = new HasteMap({
-     extensions: ['js', 'json'],
+     extensions: sourceExts,
      files,
      helpers,
      moduleCache,
@@ -104,6 +106,7 @@ exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
          platform,
          platforms,
          preferNativePlatform: true,
+         sourceExts,
        });
      }
 

@@ -45,9 +45,11 @@ type Options = {
   providesModuleNodeModules: Array<string>,
   reporter: Reporter,
   resetCache: boolean,
+  sourceExts: Array<string>,
   transformCode: TransformCode,
   watch: boolean,
 };
+
 
 class Resolver {
 
@@ -64,7 +66,6 @@ class Resolver {
   static async load(opts: Options): Promise<Resolver> {
     const depGraphOpts = Object.assign(Object.create(opts), {
       assetDependencies: ['react-native/Libraries/Image/AssetRegistry'],
-      extensions: ['js', 'json'],
       forceNodeFilesystemAPI: false,
       ignoreFilePath(filepath) {
         return filepath.indexOf('__tests__') !== -1 ||

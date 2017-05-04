@@ -30,6 +30,7 @@ type Options = {
   nonPersistent?: boolean,
   projectRoots: Array<string>,
   reporter?: Reporter,
+  +sourceExts: ?Array<string>,
   watch?: boolean,
 };
 

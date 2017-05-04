@@ -69,6 +69,14 @@ export type ConfigT = {
   getDependencyConfig(pkgName: string): Object,
 
   /**
+   * Specify any additional source file extensions to be used by the packager.
+   * For example, if you want to include a .ts file, you would return ['ts']
+   * from here and use `require('./module/example')` to require the file with
+   * path 'module/example.ts' inside your app.
+   */
+  getSourceExts: () => Array<string>,
+
+  /**
    * A module that exports:
    * - a `getHasteName(filePath)` method that returns `hasteName` for module at
    *  `filePath`, or undefined if `filePath` is not a haste module.

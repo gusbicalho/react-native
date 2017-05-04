@@ -52,7 +52,7 @@ type Options = {
   assetDependencies: Array<string>,
   assetExts: Array<string>,
   cache: Cache,
-  extensions: Array<string>,
+  sourceExts: Array<string>,
   extraNodeModules: ?{},
   forceNodeFilesystemAPI: boolean,
   getTransformCacheKey: GetTransformCacheKey,
@@ -101,7 +101,7 @@ class DependencyGraph extends EventEmitter {
 
   static _createHaste(opts: Options): JestHasteMap {
     return new JestHasteMap({
-      extensions: opts.extensions.concat(opts.assetExts),
+      extensions: opts.sourceExts.concat(opts.assetExts),
       forceNodeFilesystemAPI: opts.forceNodeFilesystemAPI,
       ignorePattern: {test: opts.ignoreFilePath},
       maxWorkers: opts.maxWorkerCount,
@@ -231,6 +231,7 @@ class DependencyGraph extends EventEmitter {
       platform,
       platforms: this._opts.platforms,
       preferNativePlatform: this._opts.preferNativePlatform,
+      sourceExts: this._opts.sourceExts,
     });
 
     const response = new ResolutionResponse({transformOptions});

@@ -39,7 +39,7 @@ describe('DependencyGraph', function() {
 
   function getOrderedDependenciesAsJSON(dgraphPromise, entryPath, platform, recursive = true) {
     return dgraphPromise
-      .then(dgraph => dgraph.getDependencies({entryPath, platform, recursive}))
+      .then(dgraph => dgraph.getDependencies({entryPath, options: emptyTransformOptions, platform, recursive}))
       .then(response => response.finalize())
       .then(({dependencies}) => Promise.all(dependencies.map(dep => Promise.all([
         dep.getName(),
@@ -101,8 +101,6 @@ describe('DependencyGraph', function() {
 
     defaults = {
       assetExts: ['png', 'jpg'],
-      cache: new Cache(),
-      extensions: ['js', 'json'],
       forceNodeFilesystemAPI: true,
       providesModuleNodeModules: [
         'haste-fbjs',
@@ -126,6 +124,7 @@ describe('DependencyGraph', function() {
       },
       getTransformCacheKey: () => 'abcdef',
       reporter: require('../../lib/reporting').nullReporter,
+      sourceExts: ['js', 'json'],
       watch: true,
     };
   });
@@ -5280,7 +5279,7 @@ describe('DependencyGraph', function() {
       var dgraph = DependencyGraph.load({
         ...defaults,
         roots: [root],
-        extensions: ['jsx', 'coffee'],
+        sourceExts: ['jsx', 'coffee'],
       });
 
       return dgraph
@@ -5314,8 +5313,9 @@ describe('DependencyGraph', function() {
           ]);
         });
     });
-    it('supports custom file extensions with relative paths', () => {
-      var root = '/root';
+
+    it('supports custom file extensions with relative paths', async () => {
+      const root = '/root';
       setMockFileSystem({
         'root': {
           'index.jsx': [
@@ -5330,7 +5330,7 @@ describe('DependencyGraph', function() {
       var dgraph = DependencyGraph.load({
         ...defaults,
         roots: [root],
-        extensions: ['jsx', 'coffee'],
+        sourceExts: ['jsx', 'coffee'],
       });
 
       return dgraph
@@ -5364,7 +5364,6 @@ describe('DependencyGraph', function() {
           ]);
         });
     });
-
   });
 
   describe('Progress updates', () => {
