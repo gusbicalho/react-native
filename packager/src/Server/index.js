@@ -34,7 +34,7 @@ import type Bundle from '../Bundler/Bundle';
 import type HMRBundle from '../Bundler/HMRBundle';
 import type {Reporter} from '../lib/reporting';
 import type {GetTransformOptions} from '../Bundler';
-import type GlobalTransformCache from '../lib/GlobalTransformCache';
+import type {GlobalTransformCache} from '../lib/GlobalTransformCache';
 import type {SourceMap, Symbolicate} from './symbolicate';
 
 const {
@@ -73,6 +73,7 @@ type Options = {
   reporter: Reporter,
   resetCache?: boolean,
   silent?: boolean,
+  sourceExts?: Array<string>,
   transformModulePath?: string,
   transformTimeoutInterval?: number,
   watch?: boolean,
@@ -144,6 +145,7 @@ class Server {
     reporter: Reporter,
     resetCache: boolean,
     silent: boolean,
+    sourceExts: Array<string>,
     transformModulePath: void | string,
     transformTimeoutInterval: ?number,
     watch: boolean,
@@ -179,6 +181,7 @@ class Server {
       reporter: options.reporter,
       resetCache: options.resetCache || false,
       silent: options.silent || false,
+      sourceExts: options.sourceExts || defaults.sourceExts,
       transformModulePath: options.transformModulePath,
       transformTimeoutInterval: options.transformTimeoutInterval,
       watch: options.watch || false,
@@ -309,7 +312,7 @@ class Server {
   getDependencies(options: {
     entryFile: string,
     platform: ?string,
-  }): Promise<ResolutionResponse> {
+  }): Promise<ResolutionResponse<Module, *>> {
     return Promise.resolve().then(() => {
       if (!options.platform) {
         options.platform = getPlatformExtension(options.entryFile);
@@ -329,7 +332,6 @@ class Server {
 
   onFileChange(type: string, filePath: string, stat: Stats) {
     this._assetServer.onFileChange(type, filePath, stat);
-    this._bundler.invalidateFile(filePath);
 
     // If Hot Loading is enabled avoid rebuilding bundles and sending live
     // updates. Instead, send the HMR updates right away and clear the bundles
@@ -429,7 +431,7 @@ class Server {
   _rangeRequestMiddleware(
     req: IncomingMessage,
     res: ServerResponse,
-    data: string,
+    data: string | Buffer,
     assetPath: string,
   ) {
     if (req.headers && req.headers.range) {
