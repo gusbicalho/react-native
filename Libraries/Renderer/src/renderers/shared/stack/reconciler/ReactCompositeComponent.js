@@ -24,7 +24,6 @@ var ReactReconciler = require('ReactReconciler');
 
 if (__DEV__) {
   var checkReactTypeSpec = require('checkReactTypeSpec');
-  var ReactDebugCurrentFrame = require('react/lib/ReactDebugCurrentFrame');
   var warningAboutMissingGetChildContext = {};
 }
 
@@ -729,9 +728,7 @@ var ReactCompositeComponent = {
    */
   _checkContextTypes: function(typeSpecs, values, location: string) {
     if (__DEV__) {
-      ReactDebugCurrentFrame.current = this._debugID;
       checkReactTypeSpec(typeSpecs, values, location, this.getName());
-      ReactDebugCurrentFrame.current = null;
     }
   },
 
