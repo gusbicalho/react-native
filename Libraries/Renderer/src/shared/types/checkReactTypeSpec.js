@@ -12,6 +12,7 @@
 'use strict';
 
 var PropTypes = require('prop-types');
+var {getStackAddendum} = require('react/lib/ReactDebugCurrentFrame');
 
 function checkReactTypeSpec(
   typeSpecs,
@@ -19,7 +20,7 @@ function checkReactTypeSpec(
   location: string,
   componentName,
 ) {
-  PropTypes.checkPropTypes(typeSpecs, values, location, componentName);
+  PropTypes.checkPropTypes(typeSpecs, values, location, componentName, getStackAddendum);
 }
 
 module.exports = checkReactTypeSpec;
