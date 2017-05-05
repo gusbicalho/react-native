@@ -122,7 +122,7 @@ const config: ConfigT = {
     return resolveSymlink([getProjectPath()]);
   },
   getSourceExts() {
-    return ['js', 'json', 'ts', 'tsx'];
+    return ['js', 'json'];
   }
 };
 
