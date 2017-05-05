@@ -54,7 +54,6 @@ export type ConfigT = {
    */
   getBlacklistRE(): RegExp,
   getProjectRoots(): Array<string>,
-  getAssetExts(): Array<string>,
   /**
    * Returns an array of project commands used by the CLI to load
    */
