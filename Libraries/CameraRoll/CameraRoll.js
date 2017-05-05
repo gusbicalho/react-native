@@ -12,7 +12,7 @@
 'use strict';
 
 // $FlowFixMe `checkPropTypes` is not in Flow's built in React typedefs yet.
-var {PropTypes, checkPropTypes} = require('React');
+var PropTypes = require("prop-types");
 var RCTCameraRollManager = require('NativeModules').CameraRollManager;
 
 var createStrictShapeTypeChecker = require('createStrictShapeTypeChecker');
@@ -215,7 +215,7 @@ class CameraRoll {
    */
   static getPhotos(params) {
     if (__DEV__) {
-      checkPropTypes({params: getPhotosParamChecker}, {params}, 'params', 'CameraRoll.getPhotos');
+      PropTypes.checkPropTypes({params: getPhotosParamChecker}, {params}, 'params', 'CameraRoll.getPhotos');
     }
     if (arguments.length > 1) {
       console.warn('CameraRoll.getPhotos(tag, success, error) is deprecated.  Use the returned Promise instead');
@@ -223,7 +223,7 @@ class CameraRoll {
       if (__DEV__) {
         const callback = arguments[1];
         successCallback = (response) => {
-          checkPropTypes(
+          PropTypes.checkPropTypes(
             {response: getPhotosReturnChecker},
             {response},
             'response',

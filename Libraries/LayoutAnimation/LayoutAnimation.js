@@ -16,7 +16,7 @@ var UIManager = require('UIManager');
 var keyMirror = require('fbjs/lib/keyMirror');
 
 // $FlowFixMe checkPropTypes not yet landed to Flow
-var {checkPropTypes, PropTypes} = require('react');
+var PropTypes = require("prop-types");
 
 var TypesEnum = {
   spring: true,
@@ -71,7 +71,7 @@ type Config = {
 }
 
 function checkConfig(config: Config, location: string, name: string) {
-  checkPropTypes({config: configType}, {config}, location, name);
+  PropTypes.checkPropTypes({config: configType}, {config}, location, name);
 }
 
 function configureNext(config: Config, onAnimationDidEnd?: Function) {
